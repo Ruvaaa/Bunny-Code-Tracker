@@ -3,6 +3,12 @@
   "displayName": "Bunny Code Tracker",
   "description": "A bunny that follows your cursor around VS Code",
   "version": "0.0.1",
+  "icon": "icon.png",
+  "publisher": "Ruvaaaaaa",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ruvaaa/Bunny-Code-Tracker"
+  },
   "engines": {
     "vscode": "^1.140.0"
   },

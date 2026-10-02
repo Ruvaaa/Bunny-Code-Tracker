@@ -12,7 +12,7 @@ Whether you're debugging, studying, or spending way too long in your editor, you
 
 ### Bunny in the IDE
 
-![Bunny Code Tracker in VS Code](assets/screenshots/bunny-in-ide.png)
+![Bunny Code Tracker in VS Code](bunny.png)
 
 The bunny stays alongside your code and follows the line where your cursor is currently positioned.
 
@@ -26,7 +26,7 @@ Then search for:
 
 **`Bunny Code Tracker: Start`**
 
-![Activating Bunny Code Tracker](assets/screenshots/activate-bunny.png)
+![Activating Bunny Code Tracker](activate.png)
 
 ---
 
