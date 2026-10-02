@@ -18,13 +18,7 @@ The bunny stays alongside your code and follows the line where your cursor is cu
 
 ### Activating Bunny Code Tracker
 
-Open the VS Code Command Palette with:
-
-**`Ctrl + Shift + P`**
-
-Then search for:
-
-**`Bunny Code Tracker: Start`**
+Once Installed, you'll see a button on the status bar below your IDE that says "🐰 Bunny: Off". Click this button to switch it on, and click it to switch it off.
 
 ![Activating Bunny Code Tracker](activate.png)
 
