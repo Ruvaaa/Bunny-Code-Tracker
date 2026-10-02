@@ -2,7 +2,7 @@
   "name": "bunny-code-tracker",
   "displayName": "Bunny Code Tracker",
   "description": "A bunny that follows your cursor around VS Code",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "icon": "icon.png",
   "publisher": "Ruvaaaaaa",
   "repository": {
@@ -15,14 +15,27 @@
   "categories": [
     "Other"
   ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "bunny-code-tracker.start",
-        "title": "Bunny Code Tracker: Start"
+        "title": "Bunny Code Tracker: Toggle"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Bunny Code Tracker",
+      "properties": {
+        "bunnyCodeTracker.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the bunny automatically when VS Code opens."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -76,6 +76,7 @@ const EXIT_PX = 10;              // how far below a cell's last line (+ half a l
 let spriteFolder: vscode.Uri;
 let bunnyVisible = false;
 let loopTimer: NodeJS.Timeout | undefined;
+let statusItem: vscode.StatusBarItem | undefined;
 
 // What the bunny currently lives in: one document, or one whole notebook
 let bunnyScope = '';
@@ -138,18 +139,31 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push({ dispose: disposeAll });
 
+    // Status bar button: click to switch the bunny on / off for this window.
+    // Once on, it follows you into every file and notebook in the window.
+    statusItem = vscode.window.createStatusBarItem(
+        vscode.StatusBarAlignment.Right, 100
+    );
+    statusItem.command = 'bunny-code-tracker.start';
+    updateStatusItem();
+    statusItem.show();
+    context.subscriptions.push(statusItem);
+
     context.subscriptions.push(
         vscode.commands.registerCommand('bunny-code-tracker.start', () => {
-            bunnyVisible = !bunnyVisible;
-
-            if (bunnyVisible) {
-                spawnBunny(vscode.window.activeTextEditor);
-                loopTimer = setInterval(loop, LOOP_MS);
-            } else {
-                despawnBunny();
-            }
+            setBunny(!bunnyVisible);
         })
     );
+
+    // Auto start: bring the bunny up as soon as VS Code opens (can be turned off
+    // in settings). If no editor is open yet, the loop picks one up when it is.
+    const autoStart = vscode.workspace
+        .getConfiguration('bunnyCodeTracker')
+        .get<boolean>('autoStart', true);
+
+    if (autoStart) {
+        setBunny(true);
+    }
 
     // Cursor moved: remember when, the bunny notices after a beat
     context.subscriptions.push(
@@ -192,6 +206,34 @@ export function activate(context: vscode.ExtensionContext) {
             }
         })
     );
+}
+
+
+/** Switch the bunny on or off for this whole window (all files and notebooks). */
+function setBunny(on: boolean) {
+    if (on === bunnyVisible) {
+        return;
+    }
+    bunnyVisible = on;
+
+    if (bunnyVisible) {
+        spawnBunny(vscode.window.activeTextEditor);
+        loopTimer = setInterval(loop, LOOP_MS);
+    } else {
+        despawnBunny();
+    }
+
+    updateStatusItem();
+}
+
+function updateStatusItem() {
+    if (!statusItem) {
+        return;
+    }
+    statusItem.text = bunnyVisible ? '🐰 Bunny: On' : '🐰 Bunny: Off';
+    statusItem.tooltip = bunnyVisible
+        ? 'Click to hide the bunny in this window'
+        : 'Click to show the bunny in this window';
 }
 
 
@@ -815,6 +857,7 @@ function loop() {
 
 function disposeAll() {
     despawnBunny();
+    statusItem = undefined;
     for (const deco of decorationCache.values()) {
         deco.dispose();
     }
